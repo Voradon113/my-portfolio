@@ -124,6 +124,11 @@
 
   footer{margin-top:34px;text-align:center;font-size:11.5px;color:var(--txt3);line-height:1.7}
   footer b{color:var(--txt2);font-weight:500}
+
+  .op-link{display:block;margin:4px 0 2px;text-align:center;font-weight:700;font-size:12.5px;
+    text-decoration:none;color:#fff;background:var(--ac);border-radius:10px;padding:10px 12px;
+    box-shadow:0 4px 16px var(--acglow);transition:.15s;letter-spacing:.01em}
+  .op-link:hover{filter:brightness(1.08);transform:translateY(-1px)}
 </style>
 </head>
 <body>
@@ -217,6 +222,7 @@ function buildDOM(){
           <div class="conn"></div>
           <div class="items">${items}</div>
         </div>
+        ${a.key==='alpha' ? '<a class="op-link" href="one-piece.html">🏴‍☠️ เปิด One Piece Dashboard →</a>' : ''}
         <div class="ctrl">
           <input type="range" min="0" max="100" step="1" aria-label="สัดส่วน ${a.k}">
           <input type="number" class="pctin" min="0" max="100" step="1" aria-label="เปอร์เซ็นต์ ${a.k}">

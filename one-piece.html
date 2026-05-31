@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Grand Line Gold — One Piece Trading Demo</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Pirata+One&family=Jost:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Sans+Thai:wght@400;500;600;700&display=swap');
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{--gold:#f0c14b;--goldb:#ffd76a;--red:#fb7185;--sea:#3fc4b0;--cream:#f3e6c8;--mute:#7b8aa0;--card:#0e2236;--line:rgba(240,193,75,.22)}
+  body{background:radial-gradient(1100px 480px at 50% -8%,rgba(63,196,176,.12),transparent 60%),linear-gradient(180deg,#0a1f30,#06111c);background-image:radial-gradient(rgba(240,193,75,.05) 1px,transparent 1px),radial-gradient(1100px 480px at 50% -8%,rgba(63,196,176,.12),transparent 60%);background-size:26px 26px,auto;color:var(--cream);font-family:'Jost','Noto Sans Thai',sans-serif;padding:14px;min-height:100vh}
+  .disp{font-family:'Pirata One','Noto Sans Thai',cursive}
+  .mono{font-family:'IBM Plex Mono','Noto Sans Thai',monospace}
+  .wrap{max-width:980px;margin:0 auto}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:12px}
+  a{color:inherit}
+  .back{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:600;color:var(--mute);text-decoration:none;margin-bottom:10px}
+  .back:hover{color:var(--goldb)}
+  @keyframes shimmer{to{background-position:200% center}}
+  @keyframes bob{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-3px) rotate(3deg)}}
+  @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+  .gshim{background:linear-gradient(90deg,#e8b84b,#ffe9a8,#e8b84b);background-size:200% auto;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shimmer 4.5s linear infinite}
+  .blink{animation:blink 1.1s infinite}
+
+  .head{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;background:linear-gradient(180deg,#13314a,#0c2034);border-color:rgba(240,193,75,.35)}
+  .htitle{display:flex;align-items:center;gap:13px}
+  .skull{width:46px;height:46px;border-radius:50%;background:rgba(240,193,75,.12);border:2px solid var(--gold);display:grid;place-items:center;font-size:24px;animation:bob 3.2s ease-in-out infinite}
+  .head h1{font-size:28px;letter-spacing:1px;line-height:1}
+  .sub{font-size:11px;color:var(--mute);margin-top:3px}
+  .tag{font-size:10px;font-weight:700;border-radius:6px;padding:1px 7px;margin-left:8px;color:#3fc4b0;border:1px solid rgba(63,196,176,.4)}
+  .btns{display:flex;gap:8px}
+  .btn{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:700;padding:8px 14px;border-radius:9px;cursor:pointer;border:1px solid var(--gold);background:rgba(63,196,176,.14);color:var(--sea);font-family:inherit}
+  .btn.ghost{border-color:rgba(240,193,75,.25);background:rgba(240,193,75,.06);color:var(--cream)}
+  .pills{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px;flex-basis:100%}
+  .pill{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:600;padding:4px 9px;border-radius:999px;background:rgba(240,193,75,.08);border:1px solid rgba(240,193,75,.2);color:var(--cream)}
+  .dot{width:7px;height:7px;border-radius:50%;background:var(--sea)}
+  .hmeta{margin-left:auto;font-size:11px;color:var(--mute);display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+  .hmeta b{color:var(--cream)}
+
+  .crew{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px}
+  .crewcard{display:flex;flex-direction:column;align-items:center;gap:8px;padding:12px 8px;border-radius:10px;background:rgba(10,31,48,.55);border:1px solid rgba(240,193,75,.27)}
+  .crewpx{padding:6px;border-radius:8px;background:radial-gradient(circle at 50% 35%,rgba(255,255,255,.05),transparent 70%)}
+  .crewname{font-size:13px;font-weight:700;color:var(--cream)}
+  .crewrole{font-family:'IBM Plex Mono',monospace;font-size:10.5px;margin-top:2px}
+
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:12px}
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px}
+  .lbl{font-size:11px;color:var(--mute);letter-spacing:.4px;margin-bottom:6px;display:flex;align-items:center;gap:5px}
+  .big{font-size:24px;font-weight:600;font-family:'IBM Plex Mono',monospace}
+  .ssub{font-size:12px;color:var(--mute);margin-top:3px;font-family:'IBM Plex Mono',monospace}
+  .bar{height:6px;border-radius:99px;background:rgba(240,193,75,.14);overflow:hidden;margin-top:8px}
+  .barf{height:100%;width:0%;transition:width .5s}
+
+  .feedhead{display:flex;justify-content:space-between;align-items:center;padding-bottom:8px;border-bottom:1px solid rgba(240,193,75,.14);margin-bottom:8px}
+  .feedhead .t{display:flex;align-items:center;gap:8px;font-size:19px;color:var(--goldb)}
+  .nami{padding:9px 11px;border-radius:9px;background:rgba(10,31,48,.6);border:1px solid rgba(240,193,75,.12);margin-bottom:10px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:12px}
+  .nami .who{color:#c79bff;font-weight:600;display:inline-flex;align-items:center;gap:5px}
+  .cbar{width:90px;height:6px;border-radius:99px;background:rgba(240,193,75,.16);overflow:hidden;display:inline-block;vertical-align:middle}
+  #feed{height:300px;overflow-y:auto;font-family:'IBM Plex Mono',monospace;font-size:12.5px;line-height:1.9}
+  #feed .t{color:#46627a;margin-right:8px}
+
+  .twocol{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:12px;margin-bottom:12px}
+  table{width:100%;border-collapse:collapse;font-family:'IBM Plex Mono',monospace;font-size:12px}
+  th{color:#46627a;font-size:10.5px;text-align:left;padding-bottom:5px;border-bottom:1px solid rgba(240,193,75,.14)}
+  td{padding:6px 0;border-bottom:1px solid rgba(240,193,75,.06)}
+  .empty{font-family:'IBM Plex Mono',monospace;font-size:12.5px;color:#46627a;text-align:center;padding:18px 0}
+
+  .legend{display:flex;align-items:center;gap:12px;flex-wrap:wrap;font-size:12px;color:#7e94a8}
+  ::-webkit-scrollbar{width:8px;height:8px}
+  ::-webkit-scrollbar-thumb{background:rgba(240,193,75,.3);border-radius:8px}
+  .note{font-size:11.5px;color:var(--mute);text-align:center;margin-top:6px}
+</style>
+</head>
+<body><div class="wrap">
+
+  <a class="back" href="index.html">← กลับแผนผังพอร์ต</a>
+
+  <div class="card head">
+    <div class="htitle">
+      <div class="skull">☠️</div>
+      <div>
+        <h1 class="disp gshim">Grand Line Gold</h1>
+        <div class="sub">ล่าขุมทรัพย์ XAUUSD · Scanner → Nami(AI) → ยิงออเดอร์ → Dashboard <span class="tag">DEMO · จำลอง</span></div>
+      </div>
+    </div>
+    <div class="btns">
+      <button class="btn" id="toggle">⚓ ทอดสมอ</button>
+      <button class="btn ghost" id="reset">↺ ออกล่าใหม่</button>
+    </div>
+    <div class="pills" id="pills"></div>
+    <div class="hmeta" id="hmeta" style="flex-basis:100%"></div>
+  </div>
+
+  <div class="card">
+    <div class="disp" style="font-size:19px;color:var(--goldb);margin-bottom:12px;display:flex;align-items:center;gap:7px">☠️ ลูกเรือประจำเรือ · 8-bit</div>
+    <div class="crew" id="crew"></div>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><div class="lbl">💰 สมบัติวันนี้</div><div class="big" id="pnlR">+0.000R</div><div class="ssub" id="pnlUsd">ตีได้ +$0.00</div></div>
+    <div class="stat"><div class="lbl">🚢 ความทนทานเรือ</div><div class="big" id="hp">100%</div><div class="bar"><div class="barf" id="hpbar" style="background:linear-gradient(90deg,#3fc4b0,#5fd38a)"></div></div></div>
+    <div class="stat"><div class="lbl">👑 ค่าหัวเป้าหมาย</div><div class="big">+$100 <span style="font-size:12px;color:var(--mute)">/ วัน</span></div><div class="bar"><div class="barf" id="tgt" style="background:linear-gradient(90deg,#e8b84b,#ffd76a)"></div></div></div>
+    <div class="stat"><div class="lbl">⚔️ การต่อสู้</div><div class="big" id="battles">0 รบ · 0 จบ</div><div class="ssub" id="wl">ชนะ 0 · แพ้ 0</div></div>
+  </div>
+
+  <div class="card">
+    <div class="feedhead">
+      <span class="t disp">🐚 Den Den Mushi · รายงานจากลูกเรือ</span>
+      <span class="mono" style="font-size:11px;color:var(--mute)" id="clock"></span>
+    </div>
+    <div class="nami">
+      <span class="who">🧭 นักเดินเรือนามิ (AI)</span>
+      <span id="nami" class="mono" style="font-size:12px;color:var(--mute)">พร้อม · รอนกเฝ้าระวังพบเรือสมบัติ</span>
+    </div>
+    <div id="feed"></div>
+  </div>
+
+  <div class="card">
+    <div class="disp" style="font-size:19px;color:var(--goldb);margin-bottom:8px;display:flex;align-items:center;gap:7px">🪙 ขุมทรัพย์สะสม ($ จำลอง)</div>
+    <div id="chart" style="height:120px"></div>
+  </div>
+
+  <div class="twocol">
+    <div class="card"><div class="disp" style="font-size:18px;color:var(--goldb);margin-bottom:10px">⚔️ กำลังเข้าตี</div><div id="pos" class="empty">ยังไม่มีการเข้าตี · ลูกเรือกำลังส่องหาเรือสมบัติ</div></div>
+    <div class="card"><div class="disp" style="font-size:18px;color:var(--goldb);margin-bottom:10px">🏴‍☠️ บันทึกการต่อสู้</div>
+      <table><thead><tr><th>เลขที่</th><th>ผล</th><th style="text-align:right">สมบัติ ($)</th></tr></thead><tbody id="trades"></tbody></table>
+      <div id="tradesEmpty" class="empty">ยังไม่มีศึกที่จบ</div>
+    </div>
+  </div>
+
+  <div class="card legend">
+    <span style="color:var(--mute);font-weight:600">เส้นทางล่าสมบัติ:</span>
+    <span><b style="color:var(--sea)">1</b> นกเฝ้าระวัง</span><span style="color:#3a5067">→</span>
+    <span><b style="color:#c79bff">2</b> นามิ (AI)</span><span style="color:#3a5067">→</span>
+    <span><b style="color:var(--gold)">3</b> ชักธงเข้าตี</span><span style="color:#3a5067">→</span>
+    <span><b style="color:var(--goldb)">4</b> จอเรือ</span>
+  </div>
+  <div class="note">เดโมจำลองเพื่อการเรียนรู้ · ไม่ใช่การเทรดจริง / ไม่ใช่คำแนะนำการลงทุน</div>
+
+</div>
+<script>
+  var GOLD='#f0c14b',GOLDB='#ffd76a',RED='#fb7185',SEA='#3fc4b0',CREAM='#f3e6c8',MUTE='#7b8aa0';
+  var COL={scan:MUTE,signal:GOLDB,analyze:'#f2a93b',pass:SEA,fail:RED,open:SEA,win:GOLDB,loss:RED};
+  var BOLD={pass:1,fail:1,win:1,loss:1};
+  var PATTERNS=[['Liquidity Sweep','(กินสภาพคล่อง)'],['Pullback','(ย่อกลับเทรนด์)'],['Order Block','(โซน OB)']];
+
+  // ----- 8-bit crew (original pixel art) -----
+  var CREW=[
+    {name:'กัปตัน',role:'คุมเรือ · ออโต้',accent:'#f0c14b',pal:{'.':'','Y':'#e9c46a','B':'#7a4a2b','K':'#1a1a1a','S':'#f0c79c','E':'#1a1a1a','R':'#e8483c','L':'#2b4a6b'},rows:['...YYYYY...','..YYYYYYY..','.YYYYYYYYY.','YYYYYYYYYYY','...BBBBB...','..KSSSSSK..','..SSSSSSS..','..SESSSES..','...SSSSS...','..RRRRRRR..','.RRRRRRRRR.','.SRRRRRRRS.','..LLL.LLL..']},
+    {name:'นักเดินเรือ',role:'AI · ตัดสินใจ',accent:'#c79bff',pal:{'.':'','H':'#ff8c3b','S':'#f0c79c','E':'#1a1a1a','T':'#3fc4b0','L':'#2b4a6b'},rows:['...HHHHH...','..HHHHHHH..','.HHHHHHHHH.','.HHSSSSSHH.','.HSSSSSSSH.','.HSESSSESH.','.HSSSSSSSH.','..SSSSSSS..','...SSSSS...','..TTTTTTT..','.TTTTTTTTT.','.STTTTTTTS.','..LLL.LLL..']},
+    {name:'นักเฝ้าระวัง',role:'Scanner · ส่องตลาด',accent:'#3fc4b0',pal:{'.':'','G':'#3fa34d','S':'#f0c79c','C':'#37c0d6','V':'#7a4a2b','L':'#2b4a6b'},rows:['..GGGGGGG..','.GGGGGGGGG.','.GGGGGGGGG.','.GSSSSSSSG.','.SCCSSSCCS.','.SSSSSSSSS.','..SSSSSSS..','...SSSSS...','..VVVVVVV..','.VVVVVVVVV.','.SVVVVVVVS.','..LLL.LLL..']},
+    {name:'นักรบดาบ',role:'Execution · เข้าตี',accent:'#fb7185',pal:{'.':'','D':'#2b3a55','S':'#f0c79c','E':'#1a1a1a','T':'#2f8f6f','M':'#b8c0c8','G':'#6b4a2b','L':'#2b4a6b'},rows:['..DDDDDDD..','.DDDDDDDDD.','.DSSSSSSSD.','.SSESSSESS.','.SSSSSSSSS.','..SSSSSSS..','...SSSSS...','..TTTTTTTM.','.TTTTTTTTM.','.STTTTTTGM.','.STTTTTTTS.','..LLL.LLL..']}
+  ];
+  function spriteSVG(rows,pal,scale){
+    var w=0,i; for(i=0;i<rows.length;i++){ if(rows[i].length>w)w=rows[i].length; }
+    var r='',y,x;
+    for(y=0;y<rows.length;y++){ for(x=0;x<rows[y].length;x++){ var c=pal[rows[y][x]]; if(c) r+='<rect x="'+x+'" y="'+y+'" width="1" height="1" fill="'+c+'"/>'; } }
+    return '<svg width="'+(w*scale)+'" height="'+(rows.length*scale)+'" viewBox="0 0 '+w+' '+rows.length+'" shape-rendering="crispEdges" style="image-rendering:pixelated;display:block">'+r+'</svg>';
+  }
+  document.getElementById('crew').innerHTML=CREW.map(function(m){
+    return '<div class="crewcard" style="border-color:'+m.accent+'44"><div class="crewpx">'+spriteSVG(m.rows,m.pal,5)+'</div><div class="crewname">'+m.name+'</div><div class="crewrole" style="color:'+m.accent+'">'+m.role+'</div></div>';
+  }).join('');
+
+  // ----- state -----
+  var running=true, price=4521.4, analyzing=false, position=null;
+  var feed=[], trades=[], chart=[0], pnlR=0, pnlUsd=0, peakUsd=0, wins=0, losses=0, lastVerdict=null, scanCount=0, idc=0;
+
+  function pick(a){ return a[Math.floor(Math.random()*a.length)]; }
+  function rid(){ return '#'+(170600000+Math.floor(Math.random()*8999999)); }
+  function nowT(){ return new Date().toLocaleTimeString('th-TH',{hour12:false}); }
+  function dirThai(s){ return s==='LONG'?'LONG (ซื้อ)':'SHORT (ขาย)'; }
+  function pushFeed(kind,text){ idc++; feed.push({id:idc,t:nowT(),kind:kind,text:text}); if(feed.length>60)feed=feed.slice(-60); }
+
+  function decideSim(setup){
+    var bias=setup.htf_bias.toLowerCase();
+    var aligned=(setup.direction==='LONG'&&bias.indexOf('bullish')>=0)||(setup.direction==='SHORT'&&bias.indexOf('bearish')>=0);
+    var good=setup.rr>=2&&aligned;
+    var conf=good?70+Math.floor(Math.random()*22):aligned?42+Math.floor(Math.random()*16):8+Math.floor(Math.random()*22);
+    return {decision:conf>=55?'pass':'fail',confidence:conf,reason:good?'กระแสหนุน RR คุ้ม ลุยได้':aligned?'RR ต่ำกว่าเกณฑ์ ถอยก่อน':'ทวนกระแสหลัก เสี่ยงเกิน'};
+  }
+
+  function openPosition(setup){
+    var ticket=rid(); var risk=+(3.4+Math.random()*1.3).toFixed(2);
+    var bias=setup.htf_bias.toLowerCase();
+    var aligned=(setup.direction==='LONG'&&bias.indexOf('bullish')>=0)||(setup.direction==='SHORT'&&bias.indexOf('bearish')>=0);
+    var winProb=aligned&&setup.rr>=2?0.72:aligned?0.58:0.42;
+    position={ticket:ticket,side:setup.direction,entry:setup.entry,sl:setup.sl,tp:setup.tp,rr:setup.rr,risk:risk,outcome:Math.random()<winProb?'win':'loss',ticksLeft:3+Math.floor(Math.random()*4)};
+    pushFeed('open','[เข้าตี] '+ticket+' '+dirThai(setup.direction)+' @ '+setup.entry+' SL '+setup.sl+' TP '+setup.tp+' ขนาด 0.01');
+  }
+
+  function resolve(pos){
+    var win=pos.outcome==='win', r, usd;
+    if(win){ r=pos.rr; usd=+(pos.risk*pos.rr).toFixed(2); }
+    else { var slip=1+Math.random()*0.3; r=-(+slip.toFixed(2)); usd=-(+(pos.risk*slip).toFixed(2)); }
+    position=null;
+    pushFeed(win?'win':'loss', win?'[ยึดสมบัติ] '+pos.ticket+' +$'+usd.toFixed(2)+' (+'+pos.rr.toFixed(2)+'R) ถึงเกาะ TP 🏴‍☠️':'[ถอยทัพ] '+pos.ticket+' -$'+Math.abs(usd).toFixed(2)+' ('+r.toFixed(2)+'R) โดนตี SL');
+    if(win)wins++; else losses++;
+    pnlR=+(pnlR+r).toFixed(2); pnlUsd=+(pnlUsd+usd).toFixed(2);
+    if(pnlUsd>peakUsd)peakUsd=pnlUsd;
+    chart.push(pnlUsd); if(chart.length>40)chart=chart.slice(-40);
+    trades.unshift({ticket:pos.ticket,result:win?'WIN':'LOSS',usd:usd}); if(trades.length>10)trades=trades.slice(0,10);
+  }
+
+  function startDetection(){
+    var dirBias=pick(['Bullish','Bearish']);
+    var direction=Math.random()<0.62?(dirBias==='Bullish'?'LONG':'SHORT'):(dirBias==='Bullish'?'SHORT':'LONG');
+    var pat=pick(PATTERNS);
+    var slDist=4+Math.random()*3, rr=+(0.5+Math.random()*2.5).toFixed(2), tpDist=slDist*rr, sl, tp;
+    if(direction==='SHORT'){ sl=+(price+slDist).toFixed(2); tp=+(price-tpDist).toFixed(2); } else { sl=+(price-slDist).toFixed(2); tp=+(price+tpDist).toFixed(2); }
+    var setup={pattern:pat[0],direction:direction,entry:+price.toFixed(2),sl:sl,tp:tp,rr:rr,htf_bias:dirBias+' H4/H1',session:pick(['London','NY overlap','Asia']),zone:pick(['premium','discount','equilibrium'])};
+    pushFeed('signal','⚔️ พบเรือสมบัติ! '+pat[0]+' '+pat[1]+' '+dirThai(direction)+' @ '+setup.entry+' SL '+sl+' TP '+tp+' RR '+rr);
+    analyzing=true;
+    pushFeed('analyze','🧭 นามิอ่าน Log Pose... (กระแส '+setup.htf_bias+' · น่านน้ำ '+setup.session+' · โซน '+setup.zone+')');
+    render();
+    setTimeout(function(){
+      var v=decideSim(setup);
+      lastVerdict={decision:v.decision,confidence:v.confidence,reason:v.reason};
+      if(v.decision==='pass'){ pushFeed('pass','นามิ: ลุยเลย! (มั่นใจ '+v.confidence+'%)  →  ชักธงเข้าตี ⚔️  | '+v.reason); openPosition(setup); }
+      else { pushFeed('fail','นามิ: ถอยก่อน! (มั่นใจ '+v.confidence+'%)  →  ไม่เข้าตี (เสี่ยงสูง)  | '+v.reason); }
+      analyzing=false; render();
+    }, 700+Math.random()*900);
+  }
+
+  function tick(){
+    if(!running) return;
+    if(position){ var tgt=position.outcome==='win'?position.tp:position.sl; price+=(tgt-price)*0.18+(Math.random()-0.5)*0.6; }
+    else { price+=(Math.random()-0.5)*3.2; }
+    price=Math.round(price*100)/100; scanCount++;
+
+    if(position){
+      position.ticksLeft--;
+      if(position.ticksLeft<=0){ resolve(position); render(); return; }
+      pushFeed('scan','🔭 ส่องกล้อง: ราคา '+price.toFixed(2)+' · กำลังตี '+position.ticket+' · มุ่งสู่ '+(position.outcome==='win'?'เกาะสมบัติ (TP)':'แนวถอย (SL)'));
+      render(); return;
+    }
+    if(analyzing){ pushFeed('scan','🔭 ส่องกล้อง: ราคา '+price.toFixed(2)+' เส้นทาง H4+H1 · รอนามิอ่าน Log Pose...'); render(); return; }
+    if(Math.random()<0.30){ startDetection(); }
+    else { pushFeed('scan','🔭 ส่องกล้อง: คลื่นราคา '+price.toFixed(2)+' เส้นทาง H4+H1 '+pick(['ทะเลสงบ','กระแสหนุนเส้นทาง','รอจังหวะลม','ยังไม่พบเรือสมบัติ'])); render(); }
+  }
+
+  function drawChart(vals){
+    var w=600,h=120,pad=8;
+    if(vals.length<2){ document.getElementById('chart').innerHTML='<div class="empty">ยังไม่มีข้อมูล</div>'; return; }
+    var min=Math.min.apply(null,vals), max=Math.max.apply(null,vals); if(max===min){max=min+1;}
+    var n=vals.length, pts=[];
+    for(var i=0;i<n;i++){ var x=pad+(i/(n-1))*(w-2*pad); var y=pad+(1-(vals[i]-min)/(max-min))*(h-2*pad); pts.push(x.toFixed(1)+','+y.toFixed(1)); }
+    var line=pts.join(' ');
+    document.getElementById('chart').innerHTML='<svg viewBox="0 0 '+w+' '+h+'" preserveAspectRatio="none" style="width:100%;height:120px;display:block"><defs><linearGradient id="gg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#f0c14b" stop-opacity="0.5"/><stop offset="100%" stop-color="#f0c14b" stop-opacity="0"/></linearGradient></defs><polygon points="'+pad+','+(h-pad)+' '+line+' '+(w-pad)+','+(h-pad)+'" fill="url(#gg)"/><polyline points="'+line+'" fill="none" stroke="#ffd76a" stroke-width="2.5"/></svg>';
+  }
+
+  function render(){
+    document.getElementById('pnlR').textContent=(pnlR>=0?'+':'')+pnlR.toFixed(3)+'R';
+    document.getElementById('pnlR').style.color=pnlR>=0?GOLDB:RED;
+    document.getElementById('pnlUsd').textContent='ตีได้ '+(pnlUsd>=0?'+':'')+'$'+pnlUsd.toFixed(2);
+    var hp=peakUsd>0?Math.max(0,Math.min(100,((pnlUsd-peakUsd*0.5)/(peakUsd-peakUsd*0.5))*100)):100;
+    document.getElementById('hp').textContent=Math.round(hp)+'%';
+    document.getElementById('hp').style.color=hp>50?SEA:RED;
+    document.getElementById('hpbar').style.width=hp+'%';
+    document.getElementById('hpbar').style.background=hp>50?'linear-gradient(90deg,#3fc4b0,#5fd38a)':RED;
+    document.getElementById('tgt').style.width=Math.max(0,Math.min(100,pnlUsd/100*100))+'%';
+    var closed=wins+losses;
+    document.getElementById('battles').textContent=(position?1:0)+' รบ · '+closed+' จบ';
+    document.getElementById('wl').textContent='ชนะ '+wins+' · แพ้ '+losses+(closed?' · '+Math.round(wins/closed*100)+'%':'');
+
+    var pills='<span class="pill"><span class="dot" style="background:'+(running?SEA:MUTE)+'"></span>นกเฝ้าระวัง '+(running?'live':'พัก')+'</span>';
+    pills+='<span class="pill"><span class="dot" style="background:#c79bff"></span>DEMO จำลอง</span>';
+    document.getElementById('pills').innerHTML=pills;
+    document.getElementById('hmeta').innerHTML='<span>เรือ <b>XAUUSD+</b></span><span>คลื่นราคา <b style="color:#ffd76a">'+price.toFixed(2)+'</b></span><span>รอบสแกน <b>'+scanCount+'</b></span>';
+
+    var nb=document.getElementById('nami');
+    if(analyzing){ nb.className='mono blink'; nb.style.color='#f2a93b'; nb.textContent='🧭 กำลังอ่านกระแสน้ำของ setup ที่เจอ...'; }
+    else if(lastVerdict){ nb.className='mono'; var pass=lastVerdict.decision==='pass', col=pass?SEA:RED;
+      nb.innerHTML='<span style="font-weight:600;color:'+col+'">'+(pass?'ลุย ⚔️':'ถอย ⛔')+'</span> <span style="color:#6b8299;margin:0 6px">มั่นใจ</span><span class="cbar"><span style="display:block;height:100%;width:'+lastVerdict.confidence+'%;background:'+col+'"></span></span> <b style="color:'+CREAM+'">'+lastVerdict.confidence+'%</b> <span style="color:#9fb4c7;margin-left:8px">'+lastVerdict.reason+'</span>'; }
+    else { nb.className='mono'; nb.style.color=MUTE; nb.textContent='พร้อม · รอนกเฝ้าระวังพบเรือสมบัติ'; }
+
+    var fe=document.getElementById('feed'); var atBottom=fe.scrollTop+fe.clientHeight>=fe.scrollHeight-30;
+    fe.innerHTML=feed.map(function(l){ var c=COL[l.kind]||'#9fb4c7'; var w=BOLD[l.kind]?'600':'400'; return '<div><span class="t">'+l.t+'</span><span style="color:'+c+';font-weight:'+w+'">'+l.text+'</span></div>'; }).join('');
+    if(atBottom)fe.scrollTop=fe.scrollHeight;
+
+    var pe=document.getElementById('pos');
+    if(position){ var u=((position.side==='LONG'?1:-1)*(price-position.entry))/Math.abs(position.entry-position.sl); var uUsd=+(u*position.risk).toFixed(2);
+      pe.className='mono'; pe.style.fontSize='12.5px';
+      pe.innerHTML='<div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid rgba(240,193,75,.1)"><span>'+position.ticket+'</span><span style="font-weight:600;color:'+(position.side==='LONG'?SEA:RED)+'">'+dirThai(position.side)+'</span></div><div style="display:flex;justify-content:space-between;color:#9fb4c7;padding-top:7px"><span>เข้า '+position.entry+'</span><span>SL '+position.sl+'</span><span>TP '+position.tp+'</span></div><div style="display:flex;justify-content:space-between;color:#9fb4c7;padding-top:7px"><span>ขนาด 0.01</span><span style="color:'+(uUsd>=0?GOLDB:RED)+';font-weight:600">สมบัติคาด '+(uUsd>=0?'+':'')+'$'+uUsd.toFixed(2)+'</span></div>';
+    } else { pe.className='empty'; pe.textContent='ยังไม่มีการเข้าตี · ลูกเรือกำลังส่องหาเรือสมบัติ'; }
+
+    document.getElementById('tradesEmpty').style.display=trades.length?'none':'block';
+    document.getElementById('trades').innerHTML=trades.map(function(t){ return '<tr><td>'+t.ticket+'</td><td style="color:'+(t.result==='WIN'?GOLDB:RED)+'">'+(t.result==='WIN'?'ยึดได้':'ถอย')+'</td><td style="text-align:right;color:'+(t.usd>=0?GOLDB:RED)+'">'+(t.usd>=0?'+':'')+'$'+t.usd.toFixed(2)+'</td></tr>'; }).join('');
+
+    drawChart(chart);
+    document.getElementById('clock').textContent='ล่าสุด '+nowT();
+  }
+
+  document.getElementById('toggle').addEventListener('click',function(){ running=!running; this.textContent=running?'⚓ ทอดสมอ':'🚢 ออกเรือ'; render(); });
+  document.getElementById('reset').addEventListener('click',function(){
+    running=true; price=4521.4; analyzing=false; position=null; feed=[]; trades=[]; chart=[0];
+    pnlR=0; pnlUsd=0; peakUsd=0; wins=0; losses=0; lastVerdict=null; scanCount=0; idc=0;
+    document.getElementById('toggle').textContent='⚓ ทอดสมอ';
+    pushFeed('open','ออกล่าขุมทรัพย์รอบใหม่ · เชื่อมต่อ MT5 #563422293 ⚓'); render();
+  });
+
+  pushFeed('open','ออกเรือจากท่า · เชื่อมต่อห้องเครื่อง MT5 #563422293 · ท่าเรือพร้อม ⚓');
+  pushFeed('scan','กางแผนที่ XAUUSD M5 · เข็มทิศกระแสน้ำพร้อม · นามิขึ้นประจำหอบังคับการ');
+  render();
+  setInterval(tick,2200);
+</script>
+</body>
+</html>
